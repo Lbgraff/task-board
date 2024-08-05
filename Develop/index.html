@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
   <link rel="stylesheet" href="./assets/css/style.css" />
-  <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"> -->
 
   <title>Task Board</title>
 </head>
@@ -29,13 +28,14 @@
 
     <!-- Todo: Create a modal with a form to add tasks -->
     <!-- <form> -->
-    <div class="modal fade" id="staticBackdrop" tabindex="-1"
-      aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" tabindex="-1">
+      <!-- aria-labelledby="formModalLabel" aria-hidden="true"> -->
+      <form>
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Task</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
               <ul class="list-group list-group-flush">
@@ -44,8 +44,8 @@
                     aria-label="Project Name" />
                 </li>
                 <li class="list-group-item">
-                  <input placeholder="Task Due Date" autocomplete="off" type="text" class="form-control mb-3"
-                    id="task-due-date" />
+                  <input placeholder="Task Due Date" autocomplete="off" type="date" class="form-control mb-3"
+                    id="datepicker" />
                 </li>
                 <li class="list-group-item">
                   <input placeholder="Task Description" autocomplete="off" type="text" id="task-description" />
@@ -54,11 +54,11 @@
              </form> 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="closer">Submit</button>
           </div>
         </div>
       </div>
+    </form>
     </div> 
 
     <div class="row swim-lanes text-center justify-content-between">
