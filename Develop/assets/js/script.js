@@ -95,22 +95,22 @@ function renderTaskList() {
             doneList.append(createTaskCard(task));
         }
     }
-//    // find all items class draggable and define what happens when dragged.
-$('.draggable').draggable({
-    opacity: 0.7,
-    zIndex: 100,
-    // This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
-    helper: function (e) {
-      // Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
-      const original = $(e.target).hasClass('draggable')
-        ? $(e.target)
-        : $(e.target).closest('.draggable');
-      // Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
-      return original.clone().css({
-        width: original.outerWidth(),
-      });
-    },
-  });
+    //    // find all items class draggable and define what happens when dragged.
+    $('.draggable').draggable({
+        opacity: 0.7,
+        zIndex: 100,
+        // This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
+        helper: function (e) {
+            // Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+            const original = $(e.target).hasClass('draggable')
+                ? $(e.target)
+                : $(e.target).closest('.draggable');
+            // Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+            return original.clone().css({
+                width: original.outerWidth(),
+            });
+        },
+    });
 
 }
 
@@ -135,44 +135,42 @@ function handleAddTask(event) {
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {
+function handleDeleteTask() {
+    const taskId = $(this).attr('data-task-id');
+    const tasks = readTasksFromStorage();
 
-    
-        const taskId = $(this).attr('data-task-id');
-        const tasks = readTasksFromStorage();
-      
-        // ? Remove project from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
-        tasks.forEach((task) => {
-          if (task.id === taskId) {
+    // ? Remove task from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
+    tasks.forEach((task) => {
+        if (task.id === taskId) {
             tasks.splice(tasks.indexOf(task), 1);
-          }
-        });
-      
-        // We will use our helper function to save the projects to localStorage
-        saveTasksToStorage(tasks);
-      
-        // Here we use our other function to print projects back to the screen
-        renderTaskList();
-      }
+        }
+    });
+
+    // We will use our helper function to save the tasks to localStorage
+    saveTasksToStorage(tasks);
+
+    // Here we use our other function to print takss back to the screen
+    renderTaskList();
+}
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     console.log("hello draggable");
-        // Read tasks from localStorage
-        const tasks = readTasksFromStorage();
-      
-        // Get the task id from the event
-        const newId = .draggable[0].dataset.taskId;
-      
-        // Get the id of the lane that the card was dropped into
-        const newStatus = event.target.id;
-      
-        for (let task of tasks) {
-          // Find the project card by the `id` and update the project status.
-          if (task.id === newId) {
+    // Read tasks from localStorage
+    const tasks = readTasksFromStorage();
+
+    // Get the task id from the event
+    const newId = ui.draggable[0].dataset.taskId;
+
+    // Get the id of the lane that the card was dropped into
+    const newStatus = event.target.id;
+
+    for (let task of tasks) {
+        // Find the task card by the `id` and update the task status.
+        if (task.id === newId) {
             task.status = newStatus;
-          }
         }
+    }
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
