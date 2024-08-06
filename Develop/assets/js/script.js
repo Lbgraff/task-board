@@ -73,30 +73,17 @@ function saveTasksToStorage(newTask) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-    // function printTaskData() {
     console.log("I am in print task")
     const tasks = readTasksFromStorage();
     console.log(tasks.length);
     const todoList = $('#todo-cards');
     todoList.empty();
-    $('#todo-cards').draggable({
-        opacity: 0.7,
-        zIndex: 100
-    })
 
     const inProgressList = $('#in-progress-cards');
     inProgressList.empty();
-    $('#in-progress-cards').draggable({
-        opacity: 0.7,
-        zIndex: 100
-    })
 
     const doneList = $('#done-cards');
     doneList.empty();
-    $('#done-cards').draggable({
-        opacity: 0.7,
-        zIndex: 100
-    })
 
     for (let task of tasks) {
         console.log(task);
@@ -109,12 +96,23 @@ function renderTaskList() {
         }
     }
 //    // find all items class draggable and define what happens when dragged.
-//    $(".draggable").draggable({
-//     opacity: 0.7,
-//     zIndex: 100,
-//     // helper function jquery ui documentation.
-//     helper: //put helper function here.
-// });
+$('.draggable').draggable({
+    opacity: 0.7,
+    zIndex: 100,
+    // This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
+    helper: function (e) {
+      // Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+      const original = $(e.target).hasClass('draggable')
+        ? $(e.target)
+        : $(e.target).closest('.draggable');
+      // Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+      return original.clone().css({
+        width: original.outerWidth(),
+      });
+    },
+  });
+
+}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -138,26 +136,33 @@ function handleAddTask(event) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-    const taskId = $(this).attr('data-task-id');
-    const tasks = readTasksFromStorage();
 
-    tasks.forEach((task) => {
-        if (task.id === taskId) {
+    
+        const taskId = $(this).attr('data-task-id');
+        const tasks = readTasksFromStorage();
+      
+        // ? Remove project from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
+        tasks.forEach((task) => {
+          if (task.id === taskId) {
             tasks.splice(tasks.indexOf(task), 1);
-        }
-    });
-    saveTasksToStorage(tasks);
-    printTaskData();
-}
+          }
+        });
+      
+        // We will use our helper function to save the projects to localStorage
+        saveTasksToStorage(tasks);
+      
+        // Here we use our other function to print projects back to the screen
+        renderTaskList();
+      }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     console.log("hello draggable");
         // Read tasks from localStorage
-        const projects = readTasksFromStorage();
+        const tasks = readTasksFromStorage();
       
         // Get the task id from the event
-        const newId = ui.draggable[0].dataset.taskId;
+        const newId = .draggable[0].dataset.taskId;
       
         // Get the id of the lane that the card was dropped into
         const newStatus = event.target.id;
@@ -174,7 +179,7 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
     renderTaskList();
 
-    closerBtnEl.on('click', handleAddTask)
+    closerBtnEl.on('click', handleAddTask);
 
     $('.lane').droppable({
         accept: '.draggable',
