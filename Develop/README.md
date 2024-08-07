@@ -12,6 +12,8 @@ Cards are draggable.
 
 When I refresh the page, then the saved tasks persist.
 
+I referenced code from the mini-project for this unit.
+
 ![screenshot](/assets/img.png)
 
 https://lbgraff.github.io/task-board/
