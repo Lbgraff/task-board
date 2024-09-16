@@ -58,9 +58,9 @@ function createTaskCard(task) {
 function readTasksFromStorage() {
     let tasks = JSON.parse(localStorage.getItem('tasks'));
 console.log(`readTasks ${tasks}`)
-    // if (!tasks) {
-    //     tasks = [];
-    // }
+    if (!tasks) {
+        tasks = [];
+    }
 
     return tasks;
 }
@@ -120,7 +120,7 @@ function handleAddTask(event) {
     const newTaskId = generateTaskId(8);
     console.log(newTaskId);
     // get user input with ID in object
-
+    const tasks = readTasksFromStorage();
     const task = {
         name: taskTitleInputEl.val(),
         desc: taskDescriptionInputEl.val(),
@@ -129,7 +129,8 @@ function handleAddTask(event) {
         status: "to-do"
     }
 
-    saveTasksToStorage(task);
+    tasks.push(task);
+    saveTasksToStorage(tasks);
     renderTaskList();
 
 }
