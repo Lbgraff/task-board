@@ -57,18 +57,18 @@ function createTaskCard(task) {
 
 function readTasksFromStorage() {
     let tasks = JSON.parse(localStorage.getItem('tasks'));
-
-    if (!tasks) {
-        tasks = [];
-    }
+console.log(`readTasks ${tasks}`)
+    // if (!tasks) {
+    //     tasks = [];
+    // }
 
     return tasks;
 }
 
 function saveTasksToStorage(newTask) {
-    const tasks = readTasksFromStorage();
-    tasks.push(newTask);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    // const tasks = readTasksFromStorage();
+    // tasks.push(newTask);
+    localStorage.setItem('tasks', JSON.stringify(newTask));
 }
 
 // Todo: create a function to render the task list and make cards draggable
